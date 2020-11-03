@@ -3,7 +3,7 @@
     "name": "b-games",
     "slug": "b-games",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "landscape",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
@@ -19,7 +19,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gurudevelopers.bgames",
+      "requireFullScreen": true
     },
     "android": {
       "adaptiveIcon": {

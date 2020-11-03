@@ -22,14 +22,16 @@ export default function BottomTabNavigator() {
         name="TabOne"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="md-text" color={color} />,
+          tabBarLabel: "Letras"
         }}
       />
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-stats" color={color} />,
+          tabBarLabel: "Numeros"
         }}
       />
     </BottomTab.Navigator>
@@ -52,7 +54,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        options={{ headerShown: false, headerTitle: 'Tab One Title' }}
       />
     </TabOneStack.Navigator>
   );
