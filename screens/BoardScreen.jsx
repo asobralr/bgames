@@ -1,8 +1,15 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import CommonColors from '../constants/CommonColors';
 import LetterPlayground from '../components/LetterPlayground';
+import Baloons from '../components/Baloons';
 
 export default class BoardScreen extends React.Component {
   constructor(props) {
@@ -11,6 +18,7 @@ export default class BoardScreen extends React.Component {
       selectedPhoto: require('../assets/images/benja.jpeg'),
       selectedName: 'BENJAMIN',
       selectedID: 0,
+      gameCompleted: false,
       availableMembers: [
         {
           id: '0',
@@ -66,15 +74,21 @@ export default class BoardScreen extends React.Component {
     </TouchableOpacity>
   );
 
+  gameCompleted = () => {
+    this.setState({ gameCompleted: true });
+  };
+
   render() {
     const {
       selectedPhoto,
       selectedName,
       availableMembers,
       selectedID,
+      gameCompleted,
     } = this.state;
     return (
       <View style={styles.container}>
+        {gameCompleted && <Baloons />}
         <View style={styles.photoContainer}>
           <View style={styles.photoWrapper}>
             <Image
@@ -85,7 +99,11 @@ export default class BoardScreen extends React.Component {
           </View>
         </View>
         <View style={styles.playgroundContainer}>
-          <LetterPlayground key={selectedID} word={selectedName} />
+          <LetterPlayground
+            key={selectedID}
+            word={selectedName}
+            gameCompleted={this.gameCompleted}
+          />
         </View>
         <View style={styles.selectorContainer}>
           <TouchableOpacity

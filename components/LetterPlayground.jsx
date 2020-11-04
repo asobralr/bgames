@@ -17,7 +17,6 @@ export default class SpellPlayground extends React.Component {
     this.state = {
       targets: [],
       letters: [],
-      completed: false,
     };
   }
 
@@ -55,8 +54,7 @@ export default class SpellPlayground extends React.Component {
         return false;
       }
     }
-    console.log('Completed!');
-    this.setState({ completed: true });
+    this.props.gameCompleted();
     return true;
   };
 
