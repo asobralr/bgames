@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, PanResponder, Dimensions } from 'react-native';
-import CommonColors from '../constants/CommonColors'
+import { View, StyleSheet, Dimensions } from 'react-native';
 
-const targetHeight = 100;
-const targetWidth = 75;
-const letterHeight = 80;
-const letterWidth = 60;
+import CommonColors from '../constants/CommonColors'
+import { targetHeight, targetWidth, letterHeight, letterWidth } from '../constants/Dimensions'
+import Letter from './Letter'
+
 const windowHeight = Dimensions.get('window').height
 const windowWidth = Dimensions.get('window').width
 
@@ -89,7 +88,13 @@ export default class SpellPlayground extends React.Component {
       <View style={styles.container}>
         <View onLayout={this.getCanvasLimits} style={styles.targetContainer}>
         {letters.map(letter => (
-          <Letter {...letter} checkLanding={this.checkLanding} target={this.state.targets[1]}/>
+          <Letter 
+            {...letter} 
+            checkLanding={this.checkLanding} 
+            target={this.state.targets[1]}
+            letterHeight={letterHeight}
+            letterWidth={letterWidth}
+            />
         ))}
         {targets.map(target => (
           <Target {...target} setTarget={this.setTarget}/>
@@ -121,75 +126,6 @@ class Target extends React.Component{
   render(){
     return(
       <View onLayout={this.getPosition} style={styles.target}>
-      </View>
-    )
-  }
-}
-
-class Letter extends React.Component{
-  constructor(props){
-    super(props)
-    this.state = {
-      dragging: false,
-      initialTop: this.props.initPos.y,
-      initialLeft: this.props.initPos.x,
-      offsetTop: 0,
-      offsetLeft: 0,
-    };
-  }
-
-  panResponder = {}
-
-  UNSAFE_componentWillMount(){
-    this.panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: this.handleStartShouldSetPanResponder,
-      onPanResponderGrant: this.handlePanResponderGrant,
-      onPanResponderMove: this.handlePanResponderMove,
-      onPanResponderRelease: this.handlePanResponderEnd,
-      onPanResponderTerminate: this.handlePanResponderEnd,
-    })     
-  }
-
-  handleStartShouldSetPanResponder = () => {
-    const shouldStart = !this.props.landed
-    return shouldStart
-  }
-
-  handlePanResponderGrant = () => {
-    this.setState({dragging: true})
-  }
-
-  handlePanResponderMove = (e, gestureState) => {
-    this.setState({
-      offsetTop: gestureState.dy,
-      offsetLeft: gestureState.dx,
-    })
-  }
-
-  handlePanResponderEnd = (e, gestureState) => {
-    const {initialTop, initialLeft} = this.state
-    this.setState({
-      dragging: false,
-      initialTop: initialTop + gestureState.dy,
-      initialLeft: initialLeft + gestureState.dx,
-      offsetTop: 0,
-      offsetLeft: 0,
-    })
-    this.props.checkLanding(this.props.id, {x: initialLeft + gestureState.dx, y: initialTop + gestureState.dy}, this.props.letter)
-  }
-
-  render(){
-    const {dragging, initialTop, initialLeft, offsetTop, offsetLeft} = this.state
-    const {landed, letter } = this.props
-    const letterStyle = landed ? styles.landedLetterText : styles.defaultLetterText
-    const panStyle = {
-      top: initialTop + offsetTop,
-      left: initialLeft + offsetLeft,
-    }
-
-    return(
-      <View style={[panStyle, styles.letter]} {...this.panResponder.panHandlers}>
-        <Text style={[styles.letterText, letterStyle]}>{letter}</Text>
       </View>
     )
   }
@@ -228,26 +164,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flex: 1,
     paddingBottom: 50
-  },
-  letter: {
-    position: 'absolute',
-    zIndex: 1000,
-    height: letterHeight,
-    width: letterWidth,
-    alignContent: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'transparent'    
-  },
-  letterText: {
-    color: CommonColors.white,
-    fontSize: 65,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  landedLetterText: {
-    color: CommonColors.orange
-  },
-  defaultLetterText: {
-    color: CommonColors.white
-  }  
+  }
 });
