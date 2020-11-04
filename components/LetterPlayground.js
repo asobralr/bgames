@@ -10,10 +10,10 @@ const letterWidth = 60;
 const windowHeight = Dimensions.get('window').height
 const windowWidth = Dimensions.get('window').width
 
-const leftLimit = windowWidth*0.2;
-const rightLimit = windowWidth*0.8;
-const topLimit = windowHeight*0.1;
-const bottomLimit = windowHeight*0.6;
+// const leftLimit = windowWidth*0.2;
+// const rightLimit = windowWidth*0.8;
+// const topLimit = windowHeight*0.1;
+// const bottomLimit = windowHeight*0.6;
 
 export default class SpellPlayground extends React.Component {
 
@@ -23,10 +23,8 @@ export default class SpellPlayground extends React.Component {
     completed: false
   }
 
-  wordArray = this.props.word.split('')
-
   componentDidMount(){
-    this.renderLetters();
+  
   }
 
   checkTotalLandings = () => {
@@ -46,17 +44,27 @@ export default class SpellPlayground extends React.Component {
     this.setState({letters}, () => this.checkTotalLandings())
   }
 
+  getCanvasLimits = (event) => {
+    const layout = event.nativeEvent.layout;
+    this.setState({canvasWidth: layout.width, canvasHeight: layout.height}, () => {this.renderLetters()})
+  }
+
   getRandomPos(){
+    const leftLimit = letterWidth * 1.5;
+    const rightLimit = this.state.canvasWidth - (letterWidth * 1.5)
+    const topLimit = letterHeight * 0.5;
+    const bottomLimit = this.state.canvasHeight - (letterHeight * 2) - 50
     const x =  Math.random()* (rightLimit - leftLimit) + leftLimit
     const y = Math.random()* (bottomLimit - topLimit) + topLimit
     return {x, y}
   }
 
   renderLetters = () => {
-    const letters = this.wordArray.map((letter, index) => {
+    const wordArray = this.props.word.split('')
+    const letters = wordArray.map((letter, index) => {
       return {key: index, id: index, letter: letter, initPos: this.getRandomPos(), landed: false}
     })
-    const targets = this.wordArray.map((letter, index) => {
+    const targets = wordArray.map((letter, index) => {
       return {key: index, id: index, expectedLetter: letter}
     })
     this.setState({letters, targets})
@@ -85,12 +93,11 @@ export default class SpellPlayground extends React.Component {
   }
 
   render() {
-
     const {letters, targets} = this.state
 
     return (
       <View style={styles.container}>
-        <View style={styles.targetContainer}>
+        <View onLayout={this.getCanvasLimits} style={styles.targetContainer}>
         {letters.map(letter => (
           <Letter {...letter} checkLanding={this.checkLanding} target={this.state.targets[1]}/>
         ))}
@@ -230,7 +237,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent',
     flex: 1,
-    paddingBottom: 80
+    paddingBottom: 50
   },
   letter: {
     position: 'absolute',
