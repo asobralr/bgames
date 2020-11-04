@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, PanResponder, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, PanResponder, Dimensions } from 'react-native';
 import CommonColors from '../constants/CommonColors'
-import { Text, View } from '../components/Themed';
 
 const targetHeight = 100;
 const targetWidth = 75;
@@ -10,21 +9,12 @@ const letterWidth = 60;
 const windowHeight = Dimensions.get('window').height
 const windowWidth = Dimensions.get('window').width
 
-// const leftLimit = windowWidth*0.2;
-// const rightLimit = windowWidth*0.8;
-// const topLimit = windowHeight*0.1;
-// const bottomLimit = windowHeight*0.6;
-
 export default class SpellPlayground extends React.Component {
 
   state = {
     targets: [],
     letters: [],
     completed: false
-  }
-
-  componentDidMount(){
-  
   }
 
   checkTotalLandings = () => {

@@ -5,7 +5,7 @@ import CommonColors from '../constants/CommonColors'
 import LetterPlayground from '../components/LetterPlayground';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default class TabOneScreen extends React.Component {
+export default class BoardScreen extends React.Component {
 
   state = {
     selectedPhoto: require("../assets/images/benja.jpeg"),
