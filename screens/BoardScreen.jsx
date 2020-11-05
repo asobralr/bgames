@@ -38,6 +38,12 @@ export default class BoardScreen extends React.Component {
           name: 'PAPA',
           selected: false,
         },
+        {
+          id: '3',
+          source: require('../assets/images/olivia.jpg'),
+          name: 'OLIVIA',
+          selected: false,
+        },
       ],
     };
   }
