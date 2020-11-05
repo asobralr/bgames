@@ -10,6 +10,7 @@ import {
 } from '../constants/Dimensions';
 import Letter from './Letter';
 import Target from './Target';
+import defineRandomPositions from '../utils/randomPoints';
 
 export default class SpellPlayground extends React.Component {
   constructor(props) {
@@ -32,19 +33,22 @@ export default class SpellPlayground extends React.Component {
       { canvasWidth: layout.width, canvasHeight: layout.height },
       () => {
         this.renderLetters();
-      },
+      }
     );
   };
 
-  getRandomPos() {
+  getBoundaries() {
     const { canvasWidth, canvasHeight } = this.state;
     const leftLimit = letterWidth * 1.5;
     const rightLimit = canvasWidth - letterWidth * 1.5;
     const topLimit = letterHeight * 0.5;
     const bottomLimit = canvasHeight - letterHeight * 2 - 50;
-    const x = Math.random() * (rightLimit - leftLimit) + leftLimit;
-    const y = Math.random() * (bottomLimit - topLimit) + topLimit;
-    return { x, y };
+    return {
+      leftLimit,
+      rightLimit,
+      topLimit,
+      bottomLimit,
+    };
   }
 
   checkTotalLandings = () => {
@@ -60,11 +64,12 @@ export default class SpellPlayground extends React.Component {
 
   renderLetters = () => {
     const wordArray = this.props.word.split('');
+    const positions = defineRandomPositions(wordArray, this.getBoundaries());
     const letters = wordArray.map((letter, index) => ({
       key: index,
       id: index,
       letter,
-      initPos: this.getRandomPos(),
+      initPos: positions[index],
       landed: false,
     }));
     const targets = wordArray.map((letter, index) => ({
@@ -78,8 +83,7 @@ export default class SpellPlayground extends React.Component {
   checkLanding = (id, position, letter) => {
     const { targets } = this.state;
     targets.forEach((target) => {
-      const {
- x1, x2, y1, y2, } = target.position;
+      const { x1, x2, y1, y2 } = target.position;
       if (position.x < x2 && position.x > x1) {
         if (position.y < y2 && position.y > y1) {
           if (letter === target.expectedLetter) {

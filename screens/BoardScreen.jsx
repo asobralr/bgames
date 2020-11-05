@@ -52,6 +52,7 @@ export default class BoardScreen extends React.Component {
       selectedName: name,
       selectedPhoto: source,
       selectedID: id,
+      gameCompleted: false,
     });
   };
 
@@ -88,7 +89,7 @@ export default class BoardScreen extends React.Component {
     } = this.state;
     return (
       <View style={styles.container}>
-        {gameCompleted && <Baloons />}
+        {gameCompleted && <Baloons key={selectedID} />}
         <View style={styles.photoContainer}>
           <View style={styles.photoWrapper}>
             <Image

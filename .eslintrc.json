@@ -22,5 +22,12 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "object-curly-newline":"off",
+        "react/destructuring-assignment":"off",
+        "react/prop-types":"off",
+        "no-use-before-define":"off",
+        "react/jsx-props-no-spreading":"off",
+        "comma-dangle":"off",
+        "global-require":"off"
     }
 }
