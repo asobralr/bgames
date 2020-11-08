@@ -9,7 +9,7 @@ function distance(x1, y1, x2, y2) {
 function validateDistance(array, x, y, pointRadius) {
   let validated = true;
   array.forEach((point) => {
-    if (distance(point.x, point.y, x, y) < letterWidth * 2) {
+    if (distance(point.x, point.y, x, y) < letterWidth) {
       validated = false;
     }
   });
@@ -18,6 +18,7 @@ function validateDistance(array, x, y, pointRadius) {
 
 const defineRandomPoints = (array, boundaries, pointRadius = letterWidth) => {
   const { leftLimit, rightLimit, bottomLimit, topLimit } = boundaries;
+  console.log(boundaries);
   const points = [];
   while (points.length < array.length) {
     const x = Math.random() * (rightLimit - leftLimit) + leftLimit;
@@ -26,6 +27,7 @@ const defineRandomPoints = (array, boundaries, pointRadius = letterWidth) => {
       points.push({ x, y });
     }
   }
+  console.log(points);
   return points;
 };
 

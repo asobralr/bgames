@@ -54,13 +54,4 @@ const styles = StyleSheet.create({
     borderBottomWidth: 5,
     marginRight: 15,
   },
-  targetContainer: {
-    flexDirection: 'row',
-    alignSelf: 'stretch',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    flex: 1,
-    paddingBottom: 50,
-  },
 });

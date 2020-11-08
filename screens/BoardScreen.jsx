@@ -96,7 +96,7 @@ export default class BoardScreen extends React.Component {
     return (
       <View style={styles.container}>
         {gameCompleted && <Baloons key={selectedID} />}
-        <View style={styles.photoContainer}>
+        {/* <View style={styles.photoContainer}>
           <View style={styles.photoWrapper}>
             <Image
               source={selectedPhoto}
@@ -104,7 +104,7 @@ export default class BoardScreen extends React.Component {
               style={styles.photo}
             />
           </View>
-        </View>
+        </View> */}
         <View style={styles.playgroundContainer}>
           <LetterPlayground
             key={selectedID}
@@ -119,7 +119,7 @@ export default class BoardScreen extends React.Component {
             }}
           >
             <View style={styles.addMemberWrapper}>
-              <Ionicons name="ios-add" size={70} style={styles.addMemberIcon} />
+              <Ionicons name="ios-add" size={60} style={styles.addMemberIcon} />
             </View>
           </TouchableOpacity>
           <FlatList
@@ -146,8 +146,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   photoWrapper: {
-    width: 160,
-    height: 160,
     borderWidth: 5,
     borderColor: CommonColors.white,
     borderRadius: 100,
@@ -155,25 +153,23 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   selectedBorder: {
-    borderColor: CommonColors.violet,
+    borderColor: CommonColors.white,
     borderWidth: 6,
   },
   photo: {
-    height: 160,
-    width: 160,
+    height: 75,
+    width: 75,
   },
   selectorPhotoWrapper: {
-    width: 100,
-    height: 100,
     borderWidth: 5,
-    borderColor: CommonColors.white,
+    borderColor: CommonColors.violet,
     borderRadius: 50,
     overflow: 'hidden',
     marginLeft: 20,
   },
   selectorPhoto: {
-    height: 100,
-    width: 100,
+    height: 60,
+    width: 60,
   },
   playgroundContainer: {
     flexGrow: 1,
@@ -181,17 +177,17 @@ const styles = StyleSheet.create({
   selectorContainer: {
     flexDirection: 'row',
     padding: 20,
-    backgroundColor: CommonColors.white,
+    backgroundColor: CommonColors.violet,
   },
   addMemberWrapper: {
-    width: 100,
-    height: 100,
+    width: 60,
+    height: 60,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: CommonColors.violet,
+    backgroundColor: CommonColors.white,
   },
   addMemberIcon: {
-    color: CommonColors.white,
+    color: CommonColors.violet,
   },
 });

@@ -39,10 +39,10 @@ export default class SpellPlayground extends React.Component {
 
   getBoundaries() {
     const { canvasWidth, canvasHeight } = this.state;
-    const leftLimit = letterWidth * 1.5;
-    const rightLimit = canvasWidth - letterWidth * 1.5;
-    const topLimit = letterHeight * 0.5;
-    const bottomLimit = canvasHeight - letterHeight * 2 - 50;
+    const leftLimit = letterWidth * 2;
+    const rightLimit = canvasWidth - letterWidth * 2;
+    const topLimit = 0;
+    const bottomLimit = canvasHeight - letterHeight * 2;
     return {
       leftLimit,
       rightLimit,
@@ -163,6 +163,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent',
     flex: 1,
-    paddingBottom: 50,
+    paddingBottom: 5,
   },
 });

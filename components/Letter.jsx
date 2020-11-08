@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View, StyleSheet, PanResponder } from 'react-native';
 
 import CommonColors from '../constants/CommonColors';
-import { letterHeight, letterWidth } from '../constants/Dimensions';
+import { letterHeight, letterWidth, letterFont } from '../constants/Dimensions';
 
 export default class Letter extends React.Component {
   panResponder = {};
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   letterText: {
     color: CommonColors.white,
-    fontSize: 65,
+    fontSize: letterFont,
     fontWeight: 'bold',
     textAlign: 'center',
   },
