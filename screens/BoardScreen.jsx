@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import { View, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import CommonColors from '../constants/CommonColors';
 import LetterPlayground from '../components/LetterPlayground';
@@ -44,6 +38,18 @@ export default class BoardScreen extends React.Component {
           name: 'OLIVIA',
           selected: false,
         },
+        {
+          id: '4',
+          source: require('../assets/images/santi.jpg'),
+          name: 'SANTI',
+          selected: false,
+        },
+        {
+          id: '5',
+          source: require('../assets/images/cosqui.jpg'),
+          name: 'COSQUI',
+          selected: false,
+        },
       ],
     };
   }
@@ -63,20 +69,9 @@ export default class BoardScreen extends React.Component {
   };
 
   photo = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => this.selectMember(item.id, item.name, item.source)}
-    >
-      <View
-        style={[
-          styles.selectorPhotoWrapper,
-          item.selected ? styles.selectedBorder : null,
-        ]}
-      >
-        <Image
-          source={item.source}
-          resizeMode="center"
-          style={styles.selectorPhoto}
-        />
+    <TouchableOpacity onPress={() => this.selectMember(item.id, item.name, item.source)}>
+      <View style={[styles.selectorPhotoWrapper, item.selected ? styles.selectedBorder : null]}>
+        <Image source={item.source} resizeMode="center" style={styles.selectorPhoto} />
       </View>
     </TouchableOpacity>
   );
@@ -86,13 +81,7 @@ export default class BoardScreen extends React.Component {
   };
 
   render() {
-    const {
-      selectedPhoto,
-      selectedName,
-      availableMembers,
-      selectedID,
-      gameCompleted,
-    } = this.state;
+    const { selectedPhoto, selectedName, availableMembers, selectedID, gameCompleted } = this.state;
     return (
       <View style={styles.container}>
         {gameCompleted && <Baloons key={selectedID} />}
@@ -106,28 +95,19 @@ export default class BoardScreen extends React.Component {
           </View>
         </View> */}
         <View style={styles.playgroundContainer}>
-          <LetterPlayground
-            key={selectedID}
-            word={selectedName}
-            gameCompleted={this.gameCompleted}
-          />
+          <LetterPlayground key={selectedID} word={selectedName} gameCompleted={this.gameCompleted} />
         </View>
         <View style={styles.selectorContainer}>
           <TouchableOpacity
             onPress={() => {
-              console.log('Add member!');
+              this.props.navigation.navigate('Add');
             }}
           >
             <View style={styles.addMemberWrapper}>
               <Ionicons name="ios-add" size={60} style={styles.addMemberIcon} />
             </View>
           </TouchableOpacity>
-          <FlatList
-            data={availableMembers}
-            renderItem={this.photo}
-            horizontal
-            keyExtractor={(item) => item.id}
-          />
+          <FlatList data={availableMembers} renderItem={this.photo} horizontal keyExtractor={(item) => item.id} />
         </View>
       </View>
     );
