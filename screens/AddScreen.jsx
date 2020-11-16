@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, Text, Button, Platform, TextInput, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, Platform, TextInput, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
+
 import CommonColors from '../constants/CommonColors';
+import Button from '../components/Button';
+import { storeTavatar } from '../models/LocalStorage';
 
 export default class AddScreen extends React.Component {
   constructor(props) {
@@ -35,6 +38,17 @@ export default class AddScreen extends React.Component {
     }
   };
 
+  okButtonHandler = async () => {
+    const { image, name } = this.state;
+    const tavatar = { name, image };
+    await storeTavatar(tavatar);
+    this.props.navigation.navigate('Board');
+  };
+
+  cancelButtonHandler = () => {
+    console.log('Cancelled!');
+  };
+
   render() {
     const { image } = this.state;
     return (
@@ -58,6 +72,10 @@ export default class AddScreen extends React.Component {
             value={this.state.name}
             maxLength={10}
           />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button icon="ios-checkmark-circle-outline" onPress={this.okButtonHandler} />
+          <Button icon="ios-close-circle-outline" onPress={this.cancelButtonHandler} inverse />
         </View>
       </View>
     );
@@ -110,5 +128,13 @@ const styles = StyleSheet.create({
   },
   cameraIcon: {
     color: CommonColors.violet,
+  },
+  buttonWrapper: {
+    flexDirection: 'row',
+    width: 500,
+    marginTop: 30,
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'space-between',
   },
 });

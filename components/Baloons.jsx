@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Image, Dimensions } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 const windowWidth = Dimensions.get('window').width;
@@ -30,10 +30,7 @@ const RisingBaloon = ({ duration, delay, style }) => (
     useNativeDriver
     style={style}
   >
-    <Image
-      source={require('../assets/images/baloon.png')}
-      style={{ width: baloonWidth, height: baloonHeight }}
-    />
+    <Image source={require('../assets/images/baloon.png')} style={{ width: baloonWidth, height: baloonHeight }} />
   </Animatable.View>
 );
 
@@ -47,7 +44,7 @@ const Baloons = ({ count = 15, duration = 6000 }) => (
     }}
   >
     {range(count)
-      .map((i) => randomize(1000))
+      .map(() => randomize(1000))
       .map((flipDelay, i) => (
         <RisingBaloon
           key={i}

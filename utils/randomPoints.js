@@ -18,7 +18,6 @@ function validateDistance(array, x, y, pointRadius) {
 
 const defineRandomPoints = (array, boundaries, pointRadius = letterWidth) => {
   const { leftLimit, rightLimit, bottomLimit, topLimit } = boundaries;
-  console.log(boundaries);
   const points = [];
   while (points.length < array.length) {
     const x = Math.random() * (rightLimit - leftLimit) + leftLimit;
@@ -27,7 +26,6 @@ const defineRandomPoints = (array, boundaries, pointRadius = letterWidth) => {
       points.push({ x, y });
     }
   }
-  console.log(points);
   return points;
 };
 

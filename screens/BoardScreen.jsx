@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+
 import CommonColors from '../constants/CommonColors';
+import { getAvatars } from '../models/LocalStorage';
 import LetterPlayground from '../components/LetterPlayground';
 import Baloons from '../components/Baloons';
 
@@ -10,68 +12,39 @@ export default class BoardScreen extends React.Component {
     super(props);
     this.state = {
       selectedPhoto: require('../assets/images/benja.jpeg'),
-      selectedName: 'BENJAMIN',
+      selectedName: '',
       selectedID: 0,
       gameCompleted: false,
-      availableMembers: [
-        {
-          id: '0',
-          source: require('../assets/images/benja.jpeg'),
-          name: 'BENJAMIN',
-          selected: true,
-        },
-        {
-          id: '1',
-          source: require('../assets/images/mama.jpg'),
-          name: 'MAMA',
-          selected: false,
-        },
-        {
-          id: '2',
-          source: require('../assets/images/papa.jpg'),
-          name: 'PAPA',
-          selected: false,
-        },
-        {
-          id: '3',
-          source: require('../assets/images/olivia.jpg'),
-          name: 'OLIVIA',
-          selected: false,
-        },
-        {
-          id: '4',
-          source: require('../assets/images/santi.jpg'),
-          name: 'SANTI',
-          selected: false,
-        },
-        {
-          id: '5',
-          source: require('../assets/images/cosqui.jpg'),
-          name: 'COSQUI',
-          selected: false,
-        },
-      ],
+      avatars: [],
     };
   }
 
-  selectMember = (id, name, source) => {
-    const availableMembers = [...this.state.availableMembers];
-    availableMembers.forEach((member) => {
+  async componentDidMount() {
+    const avatars = await getAvatars();
+    if (avatars) {
+      console.log(avatars);
+      this.setState({ avatars, selectedName: avatars[0].name });
+    }
+  }
+
+  selectMember = (id, name, image) => {
+    const avatars = [...this.state.avatars];
+    avatars.forEach((member) => {
       member.selected = member.id === id;
     });
     this.setState({
-      availableMembers,
+      avatars,
       selectedName: name,
-      selectedPhoto: source,
+      selectedPhoto: image,
       selectedID: id,
       gameCompleted: false,
     });
   };
 
   photo = ({ item }) => (
-    <TouchableOpacity onPress={() => this.selectMember(item.id, item.name, item.source)}>
+    <TouchableOpacity onPress={() => this.selectMember(item.id, item.name, item.image)}>
       <View style={[styles.selectorPhotoWrapper, item.selected ? styles.selectedBorder : null]}>
-        <Image source={item.source} resizeMode="center" style={styles.selectorPhoto} />
+        <Image source={{ uri: item.image }} resizeMode="contain" style={styles.selectorPhoto} />
       </View>
     </TouchableOpacity>
   );
@@ -81,7 +54,7 @@ export default class BoardScreen extends React.Component {
   };
 
   render() {
-    const { selectedPhoto, selectedName, availableMembers, selectedID, gameCompleted } = this.state;
+    const { selectedPhoto, selectedName, avatars, selectedID, gameCompleted } = this.state;
     return (
       <View style={styles.container}>
         {gameCompleted && <Baloons key={selectedID} />}
@@ -107,7 +80,7 @@ export default class BoardScreen extends React.Component {
               <Ionicons name="ios-add" size={60} style={styles.addMemberIcon} />
             </View>
           </TouchableOpacity>
-          <FlatList data={availableMembers} renderItem={this.photo} horizontal keyExtractor={(item) => item.id} />
+          <FlatList data={avatars} renderItem={this.photo} horizontal keyExtractor={(item) => item.id} />
         </View>
       </View>
     );
