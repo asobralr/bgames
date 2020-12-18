@@ -41,3 +41,7 @@ export const getAvatars = async () => {
   }
   return false;
 };
+
+export const clearAvatars = async () => {
+  AsyncStorage.removeItem('@tavatars');
+};

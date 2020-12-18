@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-nativ
 import { Ionicons } from '@expo/vector-icons';
 
 import CommonColors from '../constants/CommonColors';
-import { getAvatars } from '../models/LocalStorage';
+import { getAvatars, clearAvatars } from '../models/LocalStorage';
 import LetterPlayground from '../components/LetterPlayground';
 import Baloons from '../components/Baloons';
 
@@ -19,13 +19,20 @@ export default class BoardScreen extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    const unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.setAvatars();
+    });
+    this.setAvatars();
+  }
+
+  setAvatars = async () => {
     const avatars = await getAvatars();
     if (avatars) {
       console.log(avatars);
       this.setState({ avatars, selectedName: avatars[0].name });
     }
-  }
+  };
 
   selectMember = (id, name, image) => {
     const avatars = [...this.state.avatars];
