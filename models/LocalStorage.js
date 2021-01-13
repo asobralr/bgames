@@ -20,6 +20,22 @@ export const storeTavatar = async (newTavatar) => {
   }
 };
 
+export const deleteTavatar = async (tavatarIndex) => {
+  try {
+    const previous = await AsyncStorage.getItem('@tavatars');
+    let value = '';
+    if (previous !== null) {
+      const tavatars = JSON.parse(previous);
+      const newTavatars = [...tavatars];
+      newTavatars.splice(tavatarIndex, 1);
+      value = JSON.stringify(newTavatars);
+    }
+    await AsyncStorage.setItem('@tavatars', value);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const getAvatars = async () => {
   try {
     const value = await AsyncStorage.getItem('@tavatars');

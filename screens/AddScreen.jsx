@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, Platform, TextInput, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Platform,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  KeyboardAvoidingView,
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -32,47 +41,77 @@ export default class AddScreen extends React.Component {
       aspect: [4, 4],
       quality: 1,
     });
-    console.log(result);
     if (!result.cancelled) {
       this.setState({ image: result.uri });
     }
   };
 
   okButtonHandler = async () => {
-    const { image, name } = this.state;
-    const tavatar = { name, image };
-    await storeTavatar(tavatar);
-    this.props.navigation.navigate('Board');
+    const validation = this.validateForm();
+    if (validation.validated) {
+      const { image, name } = this.state;
+      const tavatar = { name, image };
+      await storeTavatar(tavatar);
+      this.props.navigation.navigate('Board');
+    } else {
+      Alert.alert(
+        "Can't add tavatar",
+        validation.error,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
+
+  validateForm = () => {
+    let validated = true;
+    let error = '';
+    if (!this.state.image) {
+      validated = false;
+      error = 'No image selected';
+    }
+    if (!this.state.name.trim()) {
+      validated = false;
+      error = "Name can't be blank";
+    }
+    return { validated, error };
   };
 
   cancelButtonHandler = () => {
-    console.log('Cancelled!');
+    this.props.navigation.navigate('Board');
   };
 
   render() {
     const { image } = this.state;
     return (
       <View style={styles.container}>
-        <View style={styles.photoWrapper}>
-          {image ? (
-            <Image source={{ uri: this.state.image }} resizeMode="contain" style={styles.photo} />
-          ) : (
-            <View style={styles.cameraIconWrapper}>
-              <TouchableOpacity onPress={this.pickImage}>
-                <Ionicons name="ios-camera" size={60} style={styles.cameraIcon} />
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-        <View>
-          <TextInput
-            autoCapitalize="characters"
-            style={styles.input}
-            onChangeText={(name) => this.setState({ name })}
-            value={this.state.name}
-            maxLength={10}
-          />
-        </View>
+        <KeyboardAvoidingView behavior="position" style={{ flex: 1 }}>
+          <View style={styles.photoWrapper}>
+            {image ? (
+              <Image source={{ uri: this.state.image }} resizeMode="contain" style={styles.photo} />
+            ) : (
+              <View style={styles.cameraIconWrapper}>
+                <TouchableOpacity onPress={this.pickImage}>
+                  <Ionicons name="ios-camera" size={60} style={styles.cameraIcon} />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+          <View>
+            <TextInput
+              autoCapitalize="characters"
+              style={styles.input}
+              onChangeText={(name) => this.setState({ name })}
+              value={this.state.name}
+              maxLength={10}
+            />
+          </View>
+        </KeyboardAvoidingView>
         <View style={styles.buttonWrapper}>
           <Button icon="ios-checkmark-circle-outline" onPress={this.okButtonHandler} />
           <Button icon="ios-close-circle-outline" onPress={this.cancelButtonHandler} inverse />

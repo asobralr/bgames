@@ -53,29 +53,28 @@ export default class Letter extends React.Component {
       offsetTop: 0,
       offsetLeft: 0,
     });
-    this.props.checkLanding(
+    const landed = this.props.checkLanding(
       this.props.id,
       { x: initialLeft + gestureState.dx, y: initialTop + gestureState.dy },
       this.props.letter
     );
+    const { x, y } = landed.snapPos;
+    if (landed.landed) {
+      this.setState({ initialTop: y, initialLeft: x });
+    }
   };
 
   render() {
     const { initialTop, initialLeft, offsetTop, offsetLeft } = this.state;
     const { landed, letter } = this.props;
-    const letterStyle = landed
-      ? styles.landedLetterText
-      : styles.defaultLetterText;
+    const letterStyle = landed ? styles.landedLetterText : styles.defaultLetterText;
     const panStyle = {
       top: initialTop + offsetTop,
       left: initialLeft + offsetLeft,
     };
 
     return (
-      <View
-        style={[panStyle, styles.letter]}
-        {...this.panResponder.panHandlers}
-      >
+      <View style={[panStyle, styles.letter]} {...this.panResponder.panHandlers}>
         <Text style={[styles.letterText, letterStyle]}>{letter}</Text>
       </View>
     );

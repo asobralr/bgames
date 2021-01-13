@@ -2,12 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import CommonColors from '../constants/CommonColors';
-import {
-  targetHeight,
-  targetWidth,
-  letterHeight,
-  letterWidth,
-} from '../constants/Dimensions';
+import { targetHeight, targetWidth, letterHeight, letterWidth } from '../constants/Dimensions';
 import Letter from './Letter';
 import Target from './Target';
 import defineRandomPositions from '../utils/randomPoints';
@@ -29,12 +24,9 @@ export default class SpellPlayground extends React.Component {
 
   getCanvasLimits = (event) => {
     const { layout } = event.nativeEvent;
-    this.setState(
-      { canvasWidth: layout.width, canvasHeight: layout.height },
-      () => {
-        this.renderLetters();
-      }
-    );
+    this.setState({ canvasWidth: layout.width, canvasHeight: layout.height }, () => {
+      this.renderLetters();
+    });
   };
 
   getBoundaries() {
@@ -81,19 +73,30 @@ export default class SpellPlayground extends React.Component {
   };
 
   checkLanding = (id, position, letter) => {
+    let landed = false;
+    let snapPos = { x: 0, y: 0 };
     const { targets } = this.state;
     targets.forEach((target) => {
       const { x1, x2, y1, y2 } = target.position;
       if (position.x < x2 && position.x > x1) {
         if (position.y < y2 && position.y > y1) {
           if (letter === target.expectedLetter) {
+            const newPos = this.snapLetter(id, target);
             this.setLetterLanded(id);
-            return true;
+            landed = true;
+            snapPos = newPos;
           }
         }
       }
-      return false;
     });
+    return { landed, snapPos };
+  };
+
+  snapLetter = (id, target) => {
+    const { x1, x2, y1, y2 } = target.position;
+    const newX = (x1 + x2) / 2 - letterWidth / 2;
+    const newY = (y1 + y2) / 2;
+    return { x: newX, y: newY };
   };
 
   setTarget = (id, x, y) => {
