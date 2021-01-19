@@ -4,7 +4,7 @@ export default {
   prefixes: [Linking.makeUrl('/')],
   config: {
     screens: {
-      TabOneScreen: 'one',        
+      TabOneScreen: 'one',
       NotFound: '*',
     },
   },
